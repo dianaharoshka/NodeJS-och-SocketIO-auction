@@ -9,6 +9,20 @@ const socket: Socket = io("http://localhost:3000", {
   },
 });
 
+const auctionName = document.getElementById("auctionName");
+
+if (currentRoom) {
+  fetch(`http://localhost:3000/api/auctions/${currentRoom}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (auctionName) {
+        auctionName.textContent = data.name;
+      }
+    })
+    .catch((error) => console.error("Error fetching auction data:", error));
+  console.log(currentRoom);
+}
+
 socket.on("newBid", (d) => {
   console.log("newBid:", d.name, d.bid);
   let highestBidder = document.getElementById(
